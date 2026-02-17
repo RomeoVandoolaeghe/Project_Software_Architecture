@@ -1,4 +1,5 @@
 import { Module } from '@nestjs/common';
+import { LoggingModule } from '../shared/logging/logging.module';
 import { PostService } from './application/post.service';
 import { CreatePostUseCase } from './application/use-cases/create-post.use-case';
 import { DeletePostUseCase } from './application/use-cases/delete-post.use-case';
@@ -10,6 +11,7 @@ import { PostController } from './infrastructure/controllers/post.controller';
 import { InMemoryPostRepository } from './infrastructure/repositories/post.in-memory.repository';
 
 @Module({
+  imports: [LoggingModule],
   controllers: [PostController],
   providers: [
     {

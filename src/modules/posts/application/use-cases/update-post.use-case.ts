@@ -1,12 +1,17 @@
 import { Injectable } from '@nestjs/common';
-import { PostRepository } from 'src/modules/domain/repositories/post.repository';
+import { LoggingService } from 'src/modules/shared/logging/domain/services/logging.service';
+import { PostRepository } from '../../domain/repositories/post.repository';
 import { UpdatePostDto } from '../dtos/update-post.dto';
 
 @Injectable()
 export class UpdatePostUseCase {
-  constructor(private readonly postRepository: PostRepository) {}
+  constructor(
+    private readonly postRepository: PostRepository,
+    private readonly loggingService: LoggingService,
+  ) {}
 
   public execute(id: string, input: UpdatePostDto) {
+    this.loggingService.log('UpdatePostUseCase.execute');
     const post = this.postRepository.getPostById(id);
 
     if (post) {

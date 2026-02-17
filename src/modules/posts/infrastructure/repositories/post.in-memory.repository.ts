@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { PostEntity } from 'src/modules/domain/entities/post.entity';
-import { PostRepository } from 'src/modules/domain/repositories/post.repository';
+import { PostEntity } from '../../domain/entities/post.entity';
+import { PostRepository } from '../../domain/repositories/post.repository';
 
 @Injectable()
 export class InMemoryPostRepository implements PostRepository {
