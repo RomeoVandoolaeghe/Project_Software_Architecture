@@ -3,6 +3,7 @@ export class PostContent {
 
   constructor(input: string) {
     this.validate(input);
+    this.value = input;
   }
 
   private validate(input: string) {

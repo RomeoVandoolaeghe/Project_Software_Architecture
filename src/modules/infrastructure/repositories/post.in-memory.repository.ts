@@ -1,42 +1,35 @@
 import { Injectable } from '@nestjs/common';
-import {
-  CreatePostModel,
-  PostModel,
-  PostRepository,
-  UpdatePostModel,
-} from 'src/modules/domain/repositories/post.repository';
-import { v4 } from 'uuid';
+import { PostEntity } from 'src/modules/domain/entities/post.entity';
+import { PostRepository } from 'src/modules/domain/repositories/post.repository';
 
 @Injectable()
 export class InMemoryPostRepository implements PostRepository {
-  private posts: PostModel[] = [];
+  private posts: Record<string, unknown>[] = [];
 
-  public getPosts(): PostModel[] {
+  public getPosts(): PostEntity[] {
     console.log('InMemoryPostRepository.getPosts');
-    return this.posts;
+    return this.posts.map((post) => PostEntity.reconstitute(post));
   }
 
   public getPostById(id: string) {
-    return this.posts.find((post) => post.id === id);
+    const post = this.posts.find((post) => post.id === id);
+
+    if (post) {
+      return PostEntity.reconstitute(post);
+    }
   }
 
-  public createPost(input: CreatePostModel) {
-    this.posts.push({
-      ...input,
-      id: v4(),
-    });
+  public createPost(input: PostEntity) {
+    this.posts.push(input.toJSON());
   }
 
-  public updatePost(id: string, input: UpdatePostModel) {
+  public updatePost(id: string, input: PostEntity) {
     this.posts = this.posts.map((post) => {
       if (post.id !== id) {
         return post;
       }
 
-      return {
-        ...post,
-        ...input,
-      };
+      return input.toJSON();
     });
   }
 

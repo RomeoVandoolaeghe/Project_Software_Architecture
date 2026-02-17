@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { PostEntity } from '../domain/entities/post.entity';
 import { PostRepository } from '../domain/repositories/post.repository';
 import { CreatePostDto } from './dtos/create-post.dto';
 import { UpdatePostDto } from './dtos/update-post.dto';
@@ -8,7 +9,11 @@ export class PostService {
   constructor(private readonly postRepository: PostRepository) {}
 
   public getPosts() {
-    return this.postRepository.getPosts();
+    const posts = this.postRepository.getPosts();
+
+    console.log(posts);
+
+    return posts;
   }
 
   public getPostById(id: string) {
@@ -16,14 +21,22 @@ export class PostService {
   }
 
   public createPost(input: CreatePostDto) {
-    return this.postRepository.createPost({
-      ...input,
-      status: 'draft',
-    });
+    const newPost = PostEntity.create(
+      input.title,
+      input.content,
+      input.authorId,
+    );
+
+    return this.postRepository.createPost(newPost);
   }
 
   public updatePost(id: string, input: UpdatePostDto) {
-    return this.postRepository.updatePost(id, input);
+    const post = this.postRepository.getPostById(id);
+
+    if (post) {
+      post.update(input.title, input.content);
+      return this.postRepository.updatePost(id, post);
+    }
   }
 
   public deletePost(id: string) {
