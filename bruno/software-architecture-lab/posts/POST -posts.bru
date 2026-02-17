@@ -1,0 +1,24 @@
+meta {
+  name: POST /posts
+  type: http
+  seq: 2
+}
+
+post {
+  url: http://localhost:3000/posts
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "title": "My article 1",
+    "content": "Content of the article",
+    "authorId": "1"
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}
