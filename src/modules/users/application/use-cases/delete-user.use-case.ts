@@ -1,16 +1,16 @@
 import { Injectable } from '@nestjs/common';
 import { LoggingService } from 'src/modules/shared/logging/domain/services/logging.service';
-import { PostRepository } from '../../domain/repositories/post.repository';
+import { UserRepository } from '../../domain/repositories/user.repository';
 
 @Injectable()
-export class DeletePostUseCase {
+export class DeleteUserUseCase {
   constructor(
-    private readonly postRepository: PostRepository,
+    private readonly userRepository: UserRepository,
     private readonly loggingService: LoggingService,
   ) {}
 
   public async execute(id: string): Promise<void> {
-    this.loggingService.log('DeletePostUseCase.execute');
-    await this.postRepository.deletePost(id);
+    this.loggingService.log('DeleteUserUseCase.execute');
+    await this.userRepository.deleteUser(id);
   }
 }

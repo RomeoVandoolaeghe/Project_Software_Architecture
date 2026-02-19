@@ -26,31 +26,34 @@ export class PostController {
   ) {}
 
   @Get()
-  public getPosts() {
-    const posts = this.getPostsUseCase.execute();
+  public async getPosts() {
+    const posts = await this.getPostsUseCase.execute();
 
     return posts.map((p) => p.toJSON());
   }
 
   @Get(':id')
-  public getPostById(@Param('id') id: string) {
-    const post = this.getPostByIdUseCase.execute(id);
+  public async getPostById(@Param('id') id: string) {
+    const post = await this.getPostByIdUseCase.execute(id);
 
     return post?.toJSON();
   }
 
   @Post()
-  public createPost(@Body() input: CreatePostDto) {
+  public async createPost(@Body() input: CreatePostDto) {
     return this.createPostUseCase.execute(input);
   }
 
   @Patch(':id')
-  public updatePost(@Param('id') id: string, @Body() input: UpdatePostDto) {
+  public async updatePost(
+    @Param('id') id: string,
+    @Body() input: UpdatePostDto,
+  ) {
     return this.updatePostUseCase.execute(id, input);
   }
 
   @Delete(':id')
-  public deletePost(@Param('id') id: string) {
+  public async deletePost(@Param('id') id: string) {
     return this.deletePostUseCase.execute(id);
   }
 }

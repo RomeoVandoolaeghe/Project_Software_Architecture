@@ -10,13 +10,13 @@ export class UpdatePostUseCase {
     private readonly loggingService: LoggingService,
   ) {}
 
-  public execute(id: string, input: UpdatePostDto) {
+  public async execute(id: string, input: UpdatePostDto): Promise<void> {
     this.loggingService.log('UpdatePostUseCase.execute');
-    const post = this.postRepository.getPostById(id);
+    const post = await this.postRepository.getPostById(id);
 
     if (post) {
       post.update(input.title, input.content);
-      this.postRepository.updatePost(id, post);
+      await this.postRepository.updatePost(id, post);
     }
   }
 }

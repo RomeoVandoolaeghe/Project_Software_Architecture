@@ -12,10 +12,10 @@ export class CreatePostUseCase {
     private readonly postRepository: PostRepository,
   ) {}
 
-  public execute(input: CreatePostDto) {
+  public async execute(input: CreatePostDto): Promise<void> {
     const post = PostEntity.create(input.title, input.content, input.authorId);
 
-    this.postRepository.createPost(post);
+    await this.postRepository.createPost(post);
 
     this.eventEmitter.emit(PostCreatedEvent, {
       postId: post.id,

@@ -18,13 +18,18 @@ export type CreatePostModel = {
 export type UpdatePostModel = Partial<CreatePostModel>;
 
 export abstract class PostRepository {
-  public abstract getPosts(): PostEntity[];
+  public abstract getPosts(): PostEntity[] | Promise<PostEntity[]>;
 
-  public abstract getPostById(id: string): PostEntity | undefined;
+  public abstract getPostById(
+    id: string,
+  ): PostEntity | undefined | Promise<PostEntity | undefined>;
 
-  public abstract createPost(input: PostEntity): void;
+  public abstract createPost(input: PostEntity): void | Promise<void>;
 
-  public abstract updatePost(id: string, input: PostEntity): void;
+  public abstract updatePost(
+    id: string,
+    input: PostEntity,
+  ): void | Promise<void>;
 
-  public abstract deletePost(id: string): void;
+  public abstract deletePost(id: string): void | Promise<void>;
 }
