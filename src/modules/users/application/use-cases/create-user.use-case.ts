@@ -8,7 +8,7 @@ export class CreateUserUseCase {
   constructor(private readonly userRepository: UserRepository) {}
 
   public async execute(input: CreateUserDto): Promise<void> {
-    const user = UserEntity.create(input.username, input.role);
+    const user = UserEntity.create(input.username, input.role, input.password);
     await this.userRepository.createUser(user);
   }
 }

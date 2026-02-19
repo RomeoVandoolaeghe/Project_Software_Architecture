@@ -11,4 +11,7 @@ export class SQLiteUserEntity {
 
   @Column()
   role: UserRole;
+
+  @Column()
+  password: string;
 }

@@ -6,18 +6,25 @@ export type UserRole = 'user' | 'moderator' | 'admin';
 export class UserEntity {
   private _username: UserUsername;
   private _role: UserRole;
+  private _password: string;
 
   private constructor(
     readonly id: string,
     username: UserUsername,
     role: UserRole,
+    password: string,
   ) {
     this._username = username;
     this._role = role;
+    this._password = password;
   }
 
-  public static create(username: string, role: UserRole): UserEntity {
-    return new UserEntity(v4(), new UserUsername(username), role);
+  public static create(
+    username: string,
+    role: UserRole,
+    password: string,
+  ): UserEntity {
+    return new UserEntity(v4(), new UserUsername(username), role, password);
   }
 
   public toJSON() {
@@ -25,6 +32,7 @@ export class UserEntity {
       id: this.id,
       role: this._role,
       username: this._username.toString(),
+      password: this._password,
     };
   }
 
@@ -42,6 +50,11 @@ export class UserEntity {
       input.id as string,
       new UserUsername(input.username as string),
       input.role as UserRole,
+      input.password as string,
     );
+  }
+
+  public checkPassword(password: string): boolean {
+    return this._password === password;
   }
 }

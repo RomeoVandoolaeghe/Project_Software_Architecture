@@ -1,4 +1,5 @@
 import { Module } from '@nestjs/common';
+import { AuthModule } from '../shared/auth/auth.module';
 import { LoggingModule } from '../shared/logging/logging.module';
 import { CreatePostUseCase } from './application/use-cases/create-post.use-case';
 import { DeletePostUseCase } from './application/use-cases/delete-post.use-case';
@@ -11,7 +12,7 @@ import { PostController } from './infrastructure/controllers/post.controller';
 import { SQLitePostRepository } from './infrastructure/repositories/post.sqlite.repository';
 
 @Module({
-  imports: [LoggingModule],
+  imports: [AuthModule, LoggingModule],
   controllers: [PostController],
   providers: [
     {

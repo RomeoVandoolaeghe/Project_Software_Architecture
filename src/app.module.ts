@@ -3,11 +3,13 @@ import { EventEmitterModule } from '@nestjs/event-emitter';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { PostModule } from './modules/posts/post.module';
+import { AuthModule } from './modules/shared/auth/auth.module';
 import { DatabaseModule } from './modules/shared/database/database.module';
 import { UserModule } from './modules/users/user.module';
 
 @Module({
   imports: [
+    AuthModule,
     DatabaseModule,
     EventEmitterModule.forRoot(),
     PostModule,

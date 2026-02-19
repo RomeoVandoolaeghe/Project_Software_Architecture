@@ -6,7 +6,11 @@ import {
   Param,
   Patch,
   Post,
+  UseGuards,
 } from '@nestjs/common';
+import { Requester } from 'src/modules/shared/auth/infrastructure/decorators/requester.decorator';
+import { JwtAuthGuard } from 'src/modules/shared/auth/infrastructure/guards/jwt-auth.guard';
+import { UserEntity } from 'src/modules/users/domain/entities/user.entity';
 import { CreatePostDto } from '../../application/dtos/create-post.dto';
 import { UpdatePostDto } from '../../application/dtos/update-post.dto';
 import { CreatePostUseCase } from '../../application/use-cases/create-post.use-case';
@@ -40,8 +44,13 @@ export class PostController {
   }
 
   @Post()
-  public async createPost(@Body() input: CreatePostDto) {
-    return this.createPostUseCase.execute(input);
+  @UseGuards(JwtAuthGuard)
+  public async createPost(
+    @Requester() user: UserEntity,
+    @Body() input: Omit<CreatePostDto, 'authorId'>,
+  ) {
+    console.log(user);
+    return this.createPostUseCase.execute({ ...input, authorId: user.id });
   }
 
   @Patch(':id')
