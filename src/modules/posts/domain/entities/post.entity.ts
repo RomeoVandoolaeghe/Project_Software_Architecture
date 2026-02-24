@@ -23,6 +23,14 @@ export class PostEntity {
     this._status = status;
   }
 
+  public get status() {
+    return this._status;
+  }
+
+  public get authorId() {
+    return this._authorId;
+  }
+
   public static reconstitute(input: Record<string, unknown>) {
     return new PostEntity(
       input.id as string,

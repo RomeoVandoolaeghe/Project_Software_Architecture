@@ -1,12 +1,14 @@
 import { v4 } from 'uuid';
+import { Permissions } from '../permissions/permissions';
 import { UserUsername } from '../value-objects/user-username.value-object';
 
-export type UserRole = 'user' | 'moderator' | 'admin';
+export type UserRole = 'user' | 'moderator' | 'admin' | 'writer';
 
 export class UserEntity {
   private _username: UserUsername;
   private _role: UserRole;
   private _password: string;
+  public readonly permissions: Permissions;
 
   private constructor(
     readonly id: string,
@@ -17,6 +19,8 @@ export class UserEntity {
     this._username = username;
     this._role = role;
     this._password = password;
+
+    this.permissions = new Permissions(this.id, role);
   }
 
   public static create(

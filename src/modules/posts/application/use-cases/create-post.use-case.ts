@@ -1,7 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { EventEmitter2 } from '@nestjs/event-emitter';
+import { UserEntity } from 'src/modules/users/domain/entities/user.entity';
 import { PostEntity } from '../../domain/entities/post.entity';
 import { PostCreatedEvent } from '../../domain/events/post-created.event';
+import { UserCannotCreatePostException } from '../../domain/exceptions/user-cannot-create-post.exception';
 import { PostRepository } from '../../domain/repositories/post.repository';
 import { CreatePostDto } from '../dtos/create-post.dto';
 
@@ -12,7 +14,11 @@ export class CreatePostUseCase {
     private readonly postRepository: PostRepository,
   ) {}
 
-  public async execute(input: CreatePostDto): Promise<void> {
+  public async execute(input: CreatePostDto, user: UserEntity): Promise<void> {
+    if (!user.permissions.posts.canCreate()) {
+      throw new UserCannotCreatePostException();
+    }
+
     const post = PostEntity.create(input.title, input.content, input.authorId);
 
     await this.postRepository.createPost(post);

@@ -6,10 +6,18 @@ meta {
 
 post {
   url: http://localhost:3000/auth/login
-  body: none
+  body: json
   auth: inherit
+}
+
+body:json {
+  {
+    "username": "reader",
+    "password": "reader"
+  }
 }
 
 settings {
   encodeUrl: true
+  timeout: 0
 }

@@ -37,8 +37,12 @@ export class PostController {
   }
 
   @Get(':id')
-  public async getPostById(@Param('id') id: string) {
-    const post = await this.getPostByIdUseCase.execute(id);
+  @UseGuards(JwtAuthGuard)
+  public async getPostById(
+    @Requester() user: UserEntity,
+    @Param('id') id: string,
+  ) {
+    const post = await this.getPostByIdUseCase.execute(id, user);
 
     return post?.toJSON();
   }
@@ -49,8 +53,10 @@ export class PostController {
     @Requester() user: UserEntity,
     @Body() input: Omit<CreatePostDto, 'authorId'>,
   ) {
-    console.log(user);
-    return this.createPostUseCase.execute({ ...input, authorId: user.id });
+    return this.createPostUseCase.execute(
+      { ...input, authorId: user.id },
+      user,
+    );
   }
 
   @Patch(':id')
