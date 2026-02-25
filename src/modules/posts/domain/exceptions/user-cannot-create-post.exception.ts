@@ -1,4 +1,4 @@
-import { DomainException } from 'src/modules/shared/errors/domain/exceptions/domain.exception';
+import { DomainException } from '../../../shared/errors/domain/exceptions/domain.exception';
 
 export class UserCannotCreatePostException extends DomainException {
   constructor() {

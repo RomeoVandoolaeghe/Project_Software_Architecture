@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
-import { UserEntity } from 'src/modules/users/domain/entities/user.entity';
-import { SQLiteUserEntity } from 'src/modules/users/infrastructure/entities/user.sqlite.entity';
 import { DataSource } from 'typeorm';
+import { UserEntity } from '../../../../users/domain/entities/user.entity';
+import { SQLiteUserEntity } from '../../../../users/infrastructure/entities/user.sqlite.entity';
 import { AuthRepository } from '../../domain/repositories/auth.repository';
 
 @Injectable()

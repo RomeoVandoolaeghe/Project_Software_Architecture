@@ -1,4 +1,4 @@
-import { PostEntity } from 'src/modules/posts/domain/entities/post.entity';
+import { PostEntity } from '../../../posts/domain/entities/post.entity';
 import { UserRole } from '../entities/user.entity';
 
 export class PostPermissions {

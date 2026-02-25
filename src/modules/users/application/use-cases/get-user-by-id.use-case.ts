@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { LoggingService } from 'src/modules/shared/logging/domain/services/logging.service';
+import { LoggingService } from '../../../shared/logging/domain/services/logging.service';
 import { UserEntity } from '../../domain/entities/user.entity';
 import { UserRepository } from '../../domain/repositories/user.repository';
 

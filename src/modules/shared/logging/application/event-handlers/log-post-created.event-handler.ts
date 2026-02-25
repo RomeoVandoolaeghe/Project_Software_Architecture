@@ -3,7 +3,7 @@ import { OnEvent } from '@nestjs/event-emitter';
 import {
   PostCreatedEvent,
   type PostCreatedEventPayload,
-} from 'src/modules/posts/domain/events/post-created.event';
+} from '../../../../posts/domain/events/post-created.event';
 import { LoggingService } from '../../domain/services/logging.service';
 
 @Injectable()

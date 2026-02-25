@@ -1,4 +1,4 @@
-import { UserEntity } from 'src/modules/users/domain/entities/user.entity';
+import { UserEntity } from '../../../../users/domain/entities/user.entity';
 
 export abstract class AuthRepository {
   public abstract findUserByUsername(

@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { LoggingService } from 'src/modules/shared/logging/domain/services/logging.service';
-import { UserEntity } from 'src/modules/users/domain/entities/user.entity';
+import { LoggingService } from '../../../shared/logging/domain/services/logging.service';
+import { UserEntity } from '../../../users/domain/entities/user.entity';
 import { PostEntity } from '../../domain/entities/post.entity';
 import { PostRepository } from '../../domain/repositories/post.repository';
 

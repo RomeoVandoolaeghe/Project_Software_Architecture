@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { EventEmitter2 } from '@nestjs/event-emitter';
-import { UserEntity } from 'src/modules/users/domain/entities/user.entity';
+import { UserEntity } from '../../../users/domain/entities/user.entity';
 import { PostEntity } from '../../domain/entities/post.entity';
 import { PostCreatedEvent } from '../../domain/events/post-created.event';
 import { UserCannotCreatePostException } from '../../domain/exceptions/user-cannot-create-post.exception';

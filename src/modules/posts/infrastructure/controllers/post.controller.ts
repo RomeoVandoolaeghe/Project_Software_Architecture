@@ -8,9 +8,9 @@ import {
   Post,
   UseGuards,
 } from '@nestjs/common';
-import { Requester } from 'src/modules/shared/auth/infrastructure/decorators/requester.decorator';
-import { JwtAuthGuard } from 'src/modules/shared/auth/infrastructure/guards/jwt-auth.guard';
-import { UserEntity } from 'src/modules/users/domain/entities/user.entity';
+import { Requester } from '../../../shared/auth/infrastructure/decorators/requester.decorator';
+import { JwtAuthGuard } from '../../../shared/auth/infrastructure/guards/jwt-auth.guard';
+import { UserEntity } from '../../../users/domain/entities/user.entity';
 import { CreatePostDto } from '../../application/dtos/create-post.dto';
 import { UpdatePostDto } from '../../application/dtos/update-post.dto';
 import { CreatePostUseCase } from '../../application/use-cases/create-post.use-case';

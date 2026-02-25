@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { LoggingService } from 'src/modules/shared/logging/domain/services/logging.service';
+import { LoggingService } from '../../../shared/logging/domain/services/logging.service';
 import { PostEntity } from '../../domain/entities/post.entity';
 import { PostRepository } from '../../domain/repositories/post.repository';
 
