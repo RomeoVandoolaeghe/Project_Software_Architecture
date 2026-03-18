@@ -1,14 +1,16 @@
 import { v4 } from 'uuid';
 import { PostContent } from '../value-objects/post-content.value-object';
 import { PostTitle } from '../value-objects/post-title.value-object';
+import { Tag } from '../../../tags/domain/entities/tag.entity';
 
 export type PostStatus = 'draft' | 'waiting' | 'accepted' | 'rejected';
 
 export class PostEntity {
   private _title: PostTitle;
   private _content: PostContent;
-  private _authorId: string;
-  private _status: PostStatus;
+  private readonly _authorId: string;
+  private readonly _status: PostStatus;
+  private _tags: Tag[];
 
   private constructor(
     readonly id: string,
@@ -16,11 +18,13 @@ export class PostEntity {
     content: PostContent,
     authorId: string,
     status: PostStatus,
+    tags: Tag[] = [],
   ) {
     this._title = title;
     this._content = content;
     this._authorId = authorId;
     this._status = status;
+    this._tags = tags;
   }
 
   public get status() {
@@ -31,6 +35,10 @@ export class PostEntity {
     return this._authorId;
   }
 
+  public get tags() {
+    return this._tags;
+  }
+
   public static reconstitute(input: Record<string, unknown>) {
     return new PostEntity(
       input.id as string,
@@ -38,6 +46,7 @@ export class PostEntity {
       new PostContent(input.content as string),
       input.authorId as string,
       input.status as PostStatus,
+      (input.tags as Tag[]) || [],
     );
   }
 
@@ -48,6 +57,7 @@ export class PostEntity {
       content: this._content.toString(),
       status: this._status,
       authorId: this._authorId,
+      tags: this.getTags(),
     };
   }
 
@@ -62,6 +72,7 @@ export class PostEntity {
       new PostContent(content),
       authorId,
       'draft',
+      [],
     );
   }
 
@@ -73,5 +84,39 @@ export class PostEntity {
     if (content) {
       this._content = new PostContent(content);
     }
+  }
+
+  public getTags(): Tag[] {
+    // On s'assure de toujours retourner un tableau, même si undefined
+    return this.tags || [];
+  }
+
+  public addTag(newTag: Tag): void {
+    if (!this._tags) {
+      this._tags = [];
+    }
+    // On vérifie que le tag n'est pas déjà présent
+    const alreadyExists = this._tags.some(
+      (tag) => tag.getId() === newTag.getId(),
+    );
+    if (!alreadyExists) {
+      this._tags.push(newTag);
+    }
+  }
+
+  public removeTag(tagIdToRemove: string): void {
+    if (!this._tags) return;
+    // On filtre pour garder tous les tags SAUF celui qu'on veut supprimer
+    this._tags = this._tags.filter((tag) => tag.getId() !== tagIdToRemove);
+  }
+
+  // Ajoute ceci avec tes autres méthodes (getTags, etc.)
+  public getAuthorId(): string {
+    // Adapte le code à l'intérieur selon comment est structuré ton PostEntity :
+    // Si tu as une propriété "authorId" :
+    return this.authorId;
+
+    // OU si tu as un objet "author" entier :
+    // return this.author.id;
   }
 }

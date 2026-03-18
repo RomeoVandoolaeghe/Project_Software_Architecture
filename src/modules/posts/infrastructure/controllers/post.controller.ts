@@ -7,7 +7,12 @@ import {
   Patch,
   Post,
   UseGuards,
+  Req,
+  HttpCode,
+  HttpStatus,
+  Query,
 } from '@nestjs/common';
+import { Request } from 'express';
 import { Requester } from '../../../shared/auth/infrastructure/decorators/requester.decorator';
 import { JwtAuthGuard } from '../../../shared/auth/infrastructure/guards/jwt-auth.guard';
 import { UserEntity } from '../../../users/domain/entities/user.entity';
@@ -18,6 +23,10 @@ import { DeletePostUseCase } from '../../application/use-cases/delete-post.use-c
 import { GetPostByIdUseCase } from '../../application/use-cases/get-post-by-id.use-case';
 import { GetPostsUseCase } from '../../application/use-cases/get-posts.use-case';
 import { UpdatePostUseCase } from '../../application/use-cases/update-post.use-case';
+import { ApiOperation, ApiResponse, ApiBearerAuth } from '@nestjs/swagger';
+import { AddTagToPostUseCase } from '../../application/use-cases/add-tag-to-post.use-case';
+import { RemoveTagFromPostUseCase } from '../../application/use-cases/remove-tag-from-post.use-case';
+import { ApiQuery } from '@nestjs/swagger';
 
 @Controller('posts')
 export class PostController {
@@ -27,13 +36,21 @@ export class PostController {
     private readonly deletePostUseCase: DeletePostUseCase,
     private readonly getPostsUseCase: GetPostsUseCase,
     private readonly getPostByIdUseCase: GetPostByIdUseCase,
+    private readonly addTagToPostUseCase: AddTagToPostUseCase,
+    private readonly removeTagFromPostUseCase: RemoveTagFromPostUseCase,
   ) {}
 
   @Get()
-  public async getPosts() {
-    const posts = await this.getPostsUseCase.execute();
+  @ApiOperation({ summary: 'Lister les posts' })
+  @ApiQuery({
+    name: 'tags',
+    required: false,
+    description: 'Filtrer par tags séparés par des virgules',
+  })
+  async getPosts(@Query('tags') tags?: string) {
+    const posts = await this.getPostsUseCase.execute(tags);
 
-    return posts.map((p) => p.toJSON());
+    return posts.map((post) => post.toJSON());
   }
 
   @Get(':id')
@@ -70,5 +87,54 @@ export class PostController {
   @Delete(':id')
   public async deletePost(@Param('id') id: string) {
     return this.deletePostUseCase.execute(id);
+  }
+
+  @Post(':postId/tags/:tagId')
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
+  @ApiOperation({ summary: 'Ajouter un tag à un post' })
+  @ApiResponse({ status: 200, description: 'Tag ajouté avec succès.' })
+  @ApiResponse({ status: 403, description: 'Non autorisé à modifier ce post.' })
+  @ApiResponse({ status: 404, description: 'Post ou Tag introuvable.' })
+  @ApiResponse({
+    status: 409,
+    description: 'Le tag est déjà associé à ce post.',
+  })
+  async addTagToPost(
+    @Param('postId') postId: string,
+    @Param('tagId') tagId: string,
+    @Req() req: Request & { user: { id: string; role: string } },
+  ) {
+    const userId = req.user.id;
+    const isAdmin = req.user.role === 'ADMIN';
+
+    const post = await this.addTagToPostUseCase.execute(
+      postId,
+      tagId,
+      userId,
+      isAdmin,
+    );
+    return post.toJSON();
+  }
+
+  @Delete(':postId/tags/:tagId')
+  @HttpCode(HttpStatus.NO_CONTENT)
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
+  @ApiOperation({ summary: "Retirer un tag d'un post" })
+  @ApiResponse({ status: 204, description: 'Tag retiré avec succès.' })
+  @ApiResponse({
+    status: 404,
+    description: 'Post, Tag ou association introuvable.',
+  })
+  async removeTagFromPost(
+    @Param('postId') postId: string,
+    @Param('tagId') tagId: string,
+    @Req() req: Request & { user: { id: string; role: string } },
+  ) {
+    const userId = req.user.id;
+    const isAdmin = req.user.role === 'ADMIN';
+
+    await this.removeTagFromPostUseCase.execute(postId, tagId, userId, isAdmin);
   }
 }

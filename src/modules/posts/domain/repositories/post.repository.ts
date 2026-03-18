@@ -18,7 +18,9 @@ export type CreatePostModel = {
 export type UpdatePostModel = Partial<CreatePostModel>;
 
 export abstract class PostRepository {
-  public abstract getPosts(): PostEntity[] | Promise<PostEntity[]>;
+  public abstract getPosts(
+    tags?: string[],
+  ): PostEntity[] | Promise<PostEntity[]>;
 
   public abstract getPostById(
     id: string,

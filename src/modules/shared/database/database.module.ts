@@ -12,6 +12,7 @@ import { SQLiteUserEntity } from '../../users/infrastructure/entities/user.sqlit
       useFactory: (configService: ConfigService) => ({
         type: 'sqlite',
         database: configService.get<string>('DATABASE_URL'),
+        autoLoadEntities: true,
         entities: [SQLitePostEntity, SQLiteUserEntity],
         synchronize: true,
       }),
