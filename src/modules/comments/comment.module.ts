@@ -6,12 +6,14 @@ import { CommentRepository } from './domain/repositories/comment.repository';
 import { SQLiteCommentRepository } from './infrastructure/repositories/comment.sqlite.repository';
 import { PostRepository } from '../posts/domain/repositories/post.repository';
 import { SQLitePostRepository } from '../posts/infrastructure/repositories/post.sqlite.repository';
+import { DeleteCommentUseCase } from './application/use-cases/delete-comment.use-case';
 
 @Module({
   controllers: [CommentController],
   providers: [
     AddCommentUseCase,
     GetPostCommentsUseCase,
+    DeleteCommentUseCase,
     {
       provide: CommentRepository,
       useClass: SQLiteCommentRepository,
