@@ -27,6 +27,7 @@ import { ApiOperation, ApiResponse, ApiBearerAuth } from '@nestjs/swagger';
 import { AddTagToPostUseCase } from '../../application/use-cases/add-tag-to-post.use-case';
 import { RemoveTagFromPostUseCase } from '../../application/use-cases/remove-tag-from-post.use-case';
 import { ApiQuery } from '@nestjs/swagger';
+import { GetPostBySlugUseCase } from '../../application/use-cases/get-post-by-slug.use-case';
 
 @Controller('posts')
 export class PostController {
@@ -38,6 +39,7 @@ export class PostController {
     private readonly getPostByIdUseCase: GetPostByIdUseCase,
     private readonly addTagToPostUseCase: AddTagToPostUseCase,
     private readonly removeTagFromPostUseCase: RemoveTagFromPostUseCase,
+    private readonly getPostBySlugUseCase: GetPostBySlugUseCase,
   ) {}
 
   @Get()
@@ -51,6 +53,11 @@ export class PostController {
     const posts = await this.getPostsUseCase.execute(tags);
 
     return posts.map((post) => post.toJSON());
+  }
+
+  @Get('slug/:slug')
+  async getPostBySlug(@Param('slug') slug: string) {
+    return this.getPostBySlugUseCase.execute(slug);
   }
 
   @Get(':id')

@@ -19,6 +19,16 @@ export class InMemoryPostRepository implements PostRepository {
     }
   }
 
+  public async getPostBySlug(slug: string): Promise<PostEntity | undefined> {
+    const post = this.posts.find((post) => post.slug === slug);
+
+    if (post) {
+      return PostEntity.reconstitute(post);
+    }
+
+    return undefined;
+  }
+
   public createPost(input: PostEntity) {
     this.posts.push(input.toJSON());
   }

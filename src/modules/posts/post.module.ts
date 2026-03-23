@@ -13,6 +13,7 @@ import { PostController } from './infrastructure/controllers/post.controller';
 // import { InMemoryPostRepository } from './infrastructure/repositories/post.in-memory.repository';
 import { SQLitePostRepository } from './infrastructure/repositories/post.sqlite.repository';
 import { TagModule } from '../tags/tag.module';
+import { GetPostBySlugUseCase } from './application/use-cases/get-post-by-slug.use-case';
 
 @Module({
   imports: [AuthModule, LoggingModule, TagModule],
@@ -30,6 +31,7 @@ import { TagModule } from '../tags/tag.module';
     GetPostByIdUseCase,
     RemoveTagFromPostUseCase,
     AddTagToPostUseCase,
+    GetPostBySlugUseCase,
   ],
 })
 export class PostModule {}
