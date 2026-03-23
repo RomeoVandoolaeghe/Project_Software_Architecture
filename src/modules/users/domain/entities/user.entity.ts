@@ -2,7 +2,12 @@ import { v4 } from 'uuid';
 import { Permissions } from '../permissions/permissions';
 import { UserUsername } from '../value-objects/user-username.value-object';
 
-export type UserRole = 'user' | 'moderator' | 'admin' | 'writer';
+export enum UserRole {
+  ADMIN = 'admin',
+  READER = 'reader',
+  WRITER = 'writer',
+  MODERATOR = 'moderator',
+}
 
 export class UserEntity {
   private _username: UserUsername;

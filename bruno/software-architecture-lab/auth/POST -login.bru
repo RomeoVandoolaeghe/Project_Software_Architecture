@@ -5,15 +5,16 @@ meta {
 }
 
 post {
-  url: http://localhost:3000/auth/login
+  url: http://localhost:3000/users
   body: json
-  auth: inherit
+  auth: bearer
 }
 
 body:json {
   {
-    "username": "reader",
-    "password": "reader"
+    "username": "romeo",
+    "role": "admin",
+    "password": "password123"
   }
 }
 
