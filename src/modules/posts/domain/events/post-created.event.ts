@@ -1,6 +1,7 @@
 export const PostCreatedEvent = 'post.created';
 
 export type PostCreatedEventPayload = {
-  postId: string;
+  id: string;
+  title: string;
   authorId: string;
 };
