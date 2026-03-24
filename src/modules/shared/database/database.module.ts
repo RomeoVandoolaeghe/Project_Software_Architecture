@@ -6,6 +6,7 @@ import { SQLiteUserEntity } from '../../users/infrastructure/entities/user.sqlit
 import { CommentSqliteEntity } from '../../comments/infrastructure/entities/comment.sqlite.entity';
 import { SubscriptionSqliteEntity } from '../../subscriptions/infrastructure/entities/subscription.sqlite.entity';
 import { NotificationSqliteEntity } from '../../notifications/infrastructure/entities/notification.sqlite.entity';
+import { TagSqliteEntity } from '../../tags/infrastructure/entities/tag.sqlite.entity';
 @Module({
   imports: [
     TypeOrmModule.forRootAsync({
@@ -21,6 +22,7 @@ import { NotificationSqliteEntity } from '../../notifications/infrastructure/ent
           CommentSqliteEntity,
           SubscriptionSqliteEntity,
           NotificationSqliteEntity,
+          TagSqliteEntity,
         ],
         synchronize: true,
       }),
