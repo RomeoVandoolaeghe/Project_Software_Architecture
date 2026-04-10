@@ -27,8 +27,9 @@ Follow these steps to set up the project locally:
    ```
 5. Démarrez l'application en mode développement :
    ```bash
-npm run start:dev
+   npm run start:dev
    ```
+
 Lors du premier lancement, la base de données SQLite ainsi que toutes les tables nécessaires seront automatiquement générées.
 
 ## Documentation de l'API
@@ -45,12 +46,12 @@ Le projet inclut des suites de tests automatisés pour valider la logique métie
 
 Pour exécuter les tests unitaires :
    ```bash
-npm run test
+   npm run test
    ```
 
 Pour exécuter les tests de bout en bout :
    ```bash
-npm run test:e2e
+   npm run test:e2e
    ```
 
 
